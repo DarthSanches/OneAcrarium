@@ -16,23 +16,19 @@
 package com.faendir.acra.ui.component.statistics
 
 import com.faendir.acra.ui.component.Card
-import com.faendir.acra.ui.component.Translatable
+import com.faendir.acra.ui.component.Translatable.Companion.createSpan
 import com.faendir.acra.ui.ext.SizeUnit
 import com.faendir.acra.ui.ext.setMaxWidthFull
 import com.faendir.acra.ui.ext.setWidth
 import com.github.appreciated.apexcharts.ApexCharts
 import com.vaadin.flow.component.Composite
 
-/**
- * @author lukas
- * @since 01.06.18
- */
 internal abstract class Chart<T>(captionId: String, vararg params: Any) : Composite<Card>() {
 
     init {
         content.setWidth(500, SizeUnit.PIXEL)
         content.setMaxWidthFull()
-        content.setHeader(Translatable.createLabel(captionId, *params))
+        content.setHeader(createSpan(captionId, *params))
     }
 
     fun setContent(map: Map<T, Int>) {

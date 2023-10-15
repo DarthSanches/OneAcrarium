@@ -2,10 +2,10 @@
 kotlin = "1.9.10"
 dokka = "1.9.0"
 springBoot = "3.1.4"
-vaadin-flow = "24.1.12"
-vaadin-base = "24.1.10"
+vaadin-flow = "24.2.0"
+vaadin-base = "24.1.12"
 kotlinPoet = "1.14.2"
-testContainers = "1.19.0"
+testContainers = "1.19.1"
 liquibase = "4.20.0"
 jooq = "3.18.5"
 karibu = "2.1.0"
@@ -22,7 +22,7 @@ commonsText = "org.apache.commons:commons-text:1.10.0"
 xbibTime = "org.xbib:time:2.3.0"
 retrace = "com.faendir.proguard:retrace:1.3"
 fuzzywuzzy = "me.xdrop:fuzzywuzzy:1.4.0"
-ziplet = "com.faendir.ziplet:ziplet:2.4.3"
+ziplet = "com.faendir.ziplet:ziplet:2.5.2"
 univocityParser = "com.univocity:univocity-parsers:2.9.1"
 avatarGenerator = "com.talanlabs:avatar-generator:1.1.0"
 apexCharts = "com.github.appreciated:apexcharts:23.0.1"
@@ -32,7 +32,7 @@ kotlin-logging = "io.github.microutils:kotlin-logging-jvm:3.0.5"
 spring-mockk = "com.ninja-squad:springmockk:4.0.2"
 strikt = "io.strikt:strikt-core:0.34.1"
 springdoc = "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0"
-guava = "com.google.guava:guava:32.1.2-jre"
+guava = "com.google.guava:guava:32.1.3-jre"
 testContainers-mysql = { module = "org.testcontainers:mysql", version.ref = "testContainers" }
 testContainers-junit = { module = "org.testcontainers:junit-jupiter", version.ref = "testContainers" }
 karibu-testing = { module = "com.github.mvysny.kaributesting:karibu-testing-v24", version.ref = "karibu" }
@@ -48,4 +48,4 @@ kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotl
 kotlin-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = "kotlin" }
 springBoot = { id = "org.springframework.boot", version.ref = "springBoot" }
 vaadin = { id = "com.vaadin", version.ref = "vaadin-base" }
-spotless = { id = "com.diffplug.spotless", version = "6.21.0" }
+spotless = { id = "com.diffplug.spotless", version = "6.22.0" }

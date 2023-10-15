@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2022 Lukas Morawietz (https://github.com/F43nd1r)
+ * (C) Copyright 2019-2023 Lukas Morawietz (https://github.com/F43nd1r)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import com.faendir.acra.navigation.View
 import com.faendir.acra.persistence.NOT_NULL
 import com.faendir.acra.persistence.report.ReportRepository
 import com.faendir.acra.ui.component.AdminCard
-import com.faendir.acra.ui.component.Translatable
+import com.faendir.acra.ui.component.Translatable.Companion.createSpan
 import com.faendir.acra.ui.ext.comboBox
 import com.faendir.acra.ui.ext.content
 import com.faendir.acra.ui.ext.downloadButton
@@ -35,7 +35,7 @@ import java.io.ByteArrayInputStream
 import java.nio.charset.StandardCharsets
 
 @View
-class ExportCard(
+class ExportAppAdminCard(
     reportRepository: ReportRepository,
     routeParams: RouteParams,
 ) : AdminCard() {
@@ -43,7 +43,7 @@ class ExportCard(
 
     init {
         content {
-            setHeader(Translatable.createLabel(Messages.EXPORT))
+            setHeader(createSpan(Messages.EXPORT))
             val mailBox = comboBox(reportRepository.get(appId, REPORT.USER_EMAIL), Messages.BY_MAIL) {
                 setWidthFull()
             }
@@ -54,7 +54,7 @@ class ExportCard(
             downloadButton(StreamResource("reports.json", InputStreamFactory {
                 SecurityContextHolder.getContext().authentication = authentication
                 try {
-                    val where = null.eqIfNotBlank(REPORT.USER_EMAIL, mailBox.value).eqIfNotBlank(REPORT.INSTALLATION_ID, idBox.value)
+                    val where = listOfNotNull(REPORT.USER_EMAIL.eqIfNotBlank(mailBox.value), REPORT.INSTALLATION_ID.eqIfNotBlank(idBox.value)).reduceOrNull(Condition::and)
                     ByteArrayInputStream(
                         if (where == null) ByteArray(0) else reportRepository.get(appId, REPORT.CONTENT.NOT_NULL, where, sorted = false)
                             .joinToString(", ", "[", "]") { it.data() }.toByteArray(StandardCharsets.UTF_8)
@@ -68,6 +68,5 @@ class ExportCard(
         }
     }
 
-    private fun Condition?.eqIfNotBlank(path: Field<String?>, value: String?): Condition? =
-        if (!value.isNullOrBlank()) this?.and(path.eq(value)) ?: path.eq(value) else null
+    private fun Field<String?>.eqIfNotBlank(value: String?): Condition? = value?.takeIf { it.isNotBlank() }?.let { eq(it) }
 }

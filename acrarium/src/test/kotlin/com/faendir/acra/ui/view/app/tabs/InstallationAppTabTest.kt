@@ -13,27 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.faendir.acra.ui.view.report
+package com.faendir.acra.ui.view.app.tabs
 
 import com.faendir.acra.common.UiParams
 import com.faendir.acra.common.UiTest
 import com.faendir.acra.persistence.TestDataBuilder
-import com.faendir.acra.persistence.app.AppId
-import com.faendir.acra.persistence.bug.BugId
+import com.faendir.acra.persistence.report.Installation
 import com.faendir.acra.persistence.user.Permission
 import com.faendir.acra.persistence.user.Role
+import com.faendir.acra.ui.view.app.AppView
+import com.faendir.acra.ui.view.installation.InstallationView
+import com.github.mvysny.kaributesting.v10._clickItem
+import com.github.mvysny.kaributesting.v10._expectOne
+import com.github.mvysny.kaributesting.v10._get
+import com.vaadin.flow.component.grid.Grid
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
-class ReportViewTest(
+class InstallationAppTabTest(
     @Autowired private val testDataBuilder: TestDataBuilder,
 ) : UiTest() {
-    private val appId: AppId = testDataBuilder.createApp()
-    private val bugId: BugId = testDataBuilder.createBug(appId)
-    private val reportId: String = testDataBuilder.createReport(appId, bugId)
-
+    private val appId = testDataBuilder.createApp()
     override fun setup() = UiParams(
-        route = ReportView::class,
-        routeParameters = ReportView.getNavigationParams(appId, bugId, reportId),
+        route = InstallationAppTab::class,
+        routeParameters = AppView.getNavigationParams(appId),
         requiredAuthorities = setOf(Role.USER, Permission(appId, Permission.Level.VIEW))
     )
+
+    @Test
+    fun `should navigate to installation view`() {
+        testDataBuilder.createReport(appId)
+        reload()
+
+        val grid = _get<Grid<Installation>>()
+        grid._clickItem(0)
+
+        _expectOne<InstallationView>()
+    }
 }

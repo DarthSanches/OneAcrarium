@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2022 Lukas Morawietz (https://github.com/F43nd1r)
+ * (C) Copyright 2018-2023 Lukas Morawietz (https://github.com/F43nd1r)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import com.faendir.acra.persistence.bug.BugRepository
 import com.faendir.acra.persistence.user.Permission
 import com.faendir.acra.security.RequiresPermission
 import com.faendir.acra.ui.component.AdminCard
-import com.faendir.acra.ui.component.Translatable
+import com.faendir.acra.ui.component.Translatable.Companion.createSpan
 import com.faendir.acra.ui.component.dialog.confirmButtons
 import com.faendir.acra.ui.component.dialog.showFluentDialog
 import com.faendir.acra.ui.ext.box
@@ -31,9 +31,9 @@ import com.faendir.acra.ui.ext.translatableText
 import com.faendir.acra.ui.view.Overview
 import com.vaadin.flow.component.UI
 
-@View("bugDangerCard")
+@View
 @RequiresPermission(Permission.Level.ADMIN)
-class DangerCard(
+class DangerBugAdminCard(
     private val bugRepository: BugRepository,
     routeParams: RouteParams,
 ) : AdminCard() {
@@ -42,7 +42,7 @@ class DangerCard(
 
     init {
         content {
-            setHeader(Translatable.createLabel(Messages.DANGER_ZONE))
+            setHeader(createSpan(Messages.DANGER_ZONE))
             setHeaderColor("var(--lumo-error-contrast-color)", "var(--lumo-error-color)")
             dividerEnabled = true
             box(Messages.DELETE_BUG, Messages.DELETE_BUG_DETAILS, Messages.DELETE) {

@@ -21,20 +21,23 @@ import com.faendir.acra.persistence.bug.BugRepository
 import com.faendir.acra.persistence.device.DeviceRepository
 import com.faendir.acra.persistence.report.Report
 import com.faendir.acra.persistence.report.ReportRepository
-import com.faendir.acra.persistence.version.VersionKey
 import com.faendir.acra.persistence.version.VersionRepository
 import com.faendir.acra.settings.AcrariumConfiguration
 import com.faendir.acra.util.findInt
 import com.faendir.acra.util.findString
 import com.faendir.acra.util.toDate
+import mu.KotlinLogging
 import org.acra.ReportField
 import org.intellij.lang.annotations.Language
 import org.jooq.JSON
+import org.json.JSONException
 import org.json.JSONObject
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
+
+private val logger = KotlinLogging.logger {}
 
 @Service
 class ReportService(
@@ -57,7 +60,17 @@ class ReportService(
     ): Report {
         val appId = appRepository.findId(reporterUserName) ?: throw IllegalArgumentException("No app for reporter $reporterUserName")
 
-        val json = JSONObject(content)
+
+        val json = try {
+            JSONObject(content)
+        } catch (e: JSONException) {
+            throw IllegalArgumentException("Invalid JSON:\n$content", e)
+        }
+        val reportId = json.getString(ReportField.REPORT_ID.name)
+        reportRepository.find(reportId)?.let {
+            logger.info { "Received report with id $reportId a second time, ignoring." }
+            return it
+        }
 
         val stacktrace = json.getString(ReportField.STACK_TRACE.name)
         val bugIdentifier = BugIdentifier.fromStacktrace(acrariumConfiguration, appId, stacktrace)
@@ -74,7 +87,6 @@ class ReportService(
 
         val phoneModel = json.optString(ReportField.PHONE_MODEL.name)
         val device = json.optJSONObject(ReportField.BUILD.name)?.optString("DEVICE") ?: ""
-        val reportId = json.getString(ReportField.REPORT_ID.name)
         val report = Report(
             id = reportId,
             androidVersion = json.optString(ReportField.ANDROID_VERSION.name),

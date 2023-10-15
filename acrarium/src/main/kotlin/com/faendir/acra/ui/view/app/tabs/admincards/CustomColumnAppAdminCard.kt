@@ -21,11 +21,10 @@ import com.faendir.acra.navigation.View
 import com.faendir.acra.persistence.app.AppRepository
 import com.faendir.acra.persistence.app.CustomColumn
 import com.faendir.acra.persistence.user.Permission
-import com.faendir.acra.persistence.user.Role
-import com.faendir.acra.security.RequiresPermission
 import com.faendir.acra.security.SecurityUtils
 import com.faendir.acra.ui.component.AdminCard
 import com.faendir.acra.ui.component.Translatable
+import com.faendir.acra.ui.component.Translatable.Companion.createSpan
 import com.faendir.acra.ui.component.grid.column
 import com.faendir.acra.ui.component.grid.renderer.ButtonRenderer
 import com.faendir.acra.ui.ext.*
@@ -37,8 +36,7 @@ import com.vaadin.flow.data.binder.Binder
 import java.util.*
 
 @View
-@RequiresPermission(Permission.Level.VIEW)
-class CustomColumnCard(
+class CustomColumnAppAdminCard(
     appRepository: AppRepository,
     routeParams: RouteParams,
 ) : AdminCard() {
@@ -47,7 +45,7 @@ class CustomColumnCard(
 
     init {
         content {
-            setHeader(Translatable.createLabel(Messages.CUSTOM_COLUMNS))
+            setHeader(createSpan(Messages.CUSTOM_COLUMNS))
             acrariumGrid(appRepository.getCustomColumns(appId)) {
                 setMinHeight(280, SizeUnit.PIXEL)
                 setHeight(100, SizeUnit.PERCENTAGE)
@@ -61,7 +59,7 @@ class CustomColumnCard(
                     captionId = Messages.NAME
                     setFlexGrow(1)
                 }
-                if (SecurityUtils.hasRole(Role.ADMIN)) {
+                if (SecurityUtils.hasPermission(appId, Permission.Level.ADMIN)) {
                     editor.binder = Binder(CustomColumn::class.java)
                     editor.isBuffered = true
                     val regex = Regex("[\\w_-]+(\\.[\\w_-]+)*")

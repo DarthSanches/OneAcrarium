@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017-2022 Lukas Morawietz (https://github.com/F43nd1r)
+ * (C) Copyright 2018-2023 Lukas Morawietz (https://github.com/F43nd1r)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,18 @@
  */
 package com.faendir.acra.ui.view.app.tabs
 
-import com.faendir.acra.navigation.RouteParams
 import com.faendir.acra.navigation.View
-import com.faendir.acra.persistence.report.ReportRepository
-import com.faendir.acra.persistence.version.VersionRepository
-import com.faendir.acra.ui.component.statistics.Statistics
+import com.faendir.acra.ui.component.AdminCard
+import com.faendir.acra.ui.component.CardView
+import com.faendir.acra.ui.component.SpringComposite
 import com.faendir.acra.ui.view.app.AppView
+import com.faendir.acra.ui.view.app.tabs.admincards.*
 import com.vaadin.flow.router.Route
 
-/**
- * @author lukas
- * @since 11.10.18
- */
 @View
-@Route(value = "statistics", layout = AppView::class)
-class StatisticsTab(
-    reportRepository: ReportRepository,
-    versionRepository: VersionRepository,
-    routeParams: RouteParams,
-) : Statistics(routeParams.appId(), null, reportRepository, versionRepository)
+@Route(value = "admin", layout = AppView::class)
+class AdminAppTab : SpringComposite<CardView<AdminCard>>() {
+    init {
+        content.add(VersionAppAdminCard::class, NotificationAppAdminCard::class, ExportAppAdminCard::class, CustomColumnAppAdminCard::class, DangerAppAdminCard::class)
+    }
+}

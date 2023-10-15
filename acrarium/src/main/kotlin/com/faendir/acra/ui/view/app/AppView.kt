@@ -30,10 +30,6 @@ import com.vaadin.flow.router.NotFoundException
 import com.vaadin.flow.router.ParentLayout
 import com.vaadin.flow.router.RoutePrefix
 
-/**
- * @author lukas
- * @since 13.07.18
- */
 @View
 @RoutePrefix("app/:$PARAM_APP")
 @ParentLayout(MainView::class)
@@ -43,11 +39,11 @@ class AppView(
     routeParams: RouteParams,
 ) : TabView(
     (appRepository.find(routeParams.appId()) ?: throw NotFoundException()).name,
-    TabInfo(BugTab::class, Messages.BUGS),
-    TabInfo(ReportTab::class, Messages.REPORTS),
-    TabInfo(InstallationTab::class, Messages.INSTALLATIONS),
-    TabInfo(StatisticsTab::class, Messages.STATISTICS),
-    TabInfo(AdminTab::class, Messages.ADMIN)
+    TabInfo(BugAppTab::class, Messages.BUGS),
+    TabInfo(ReportAppTab::class, Messages.REPORTS),
+    TabInfo(InstallationAppTab::class, Messages.INSTALLATIONS),
+    TabInfo(StatisticsAppTab::class, Messages.STATISTICS),
+    TabInfo(AdminAppTab::class, Messages.ADMIN)
 ) {
     companion object {
         fun getNavigationParams(appId: AppId) = mapOf(PARAM_APP to appId.toString())

@@ -28,14 +28,12 @@ import com.vaadin.flow.component.*
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.select.Select
 import com.vaadin.flow.component.textfield.NumberField
-import org.jooq.*
+import org.jooq.Condition
+import org.jooq.Field
+import org.jooq.SelectField
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
-/**
- * @author lukas
- * @since 01.06.18
- */
 internal class Property<F, C, T, E : HasValue.ValueChangeEvent<F>, V> private
 constructor(
     private val appId: AppId,
@@ -43,7 +41,7 @@ constructor(
     private val filter: (F) -> Condition,
     private val chart: Chart<T>,
     private val reportRepository: ReportRepository,
-    private val select: SelectField<V>,
+    private val select: SelectField<V?>,
     private val getChartValue: (V) -> T,
     filterTextId: String,
     vararg params: Any
@@ -70,7 +68,7 @@ constructor(
     }
 
     fun update(expression: Condition?) {
-        chart.setContent(reportRepository.countGroupedBy(appId, select, expression).mapKeys { getChartValue(it.key) })
+        chart.setContent(reportRepository.countGroupedBy(appId, select, expression).filterKeys { it != null }.mapKeys { getChartValue(it.key!!) })
     }
 
     internal class Factory(
@@ -79,8 +77,8 @@ constructor(
         private val expression: Condition?,
         private val appId: AppId
     ) {
-        fun createStringProperty(field: Field<String>, filterTextId: String, chartTitleId: String): Property<*, *, *, *, *> {
-            val list = reportRepository.get(appId, field, where = expression)
+        fun createStringProperty(field: Field<String?>, filterTextId: String, chartTitleId: String): Property<*, *, *, *, *> {
+            val list = reportRepository.get(appId, field, where = field.isNotNull.and(expression))
             val select = Select<String>()
             select.setItems(list)
             if (list.isNotEmpty()) {
@@ -110,7 +108,7 @@ constructor(
             )
         }
 
-        fun createAgeProperty(field: Field<Instant>, filterTextId: String, chartTitleId: String): Property<*, *, *, *, *> {
+        fun createAgeProperty(field: Field<Instant?>, filterTextId: String, chartTitleId: String): Property<*, *, *, *, *> {
             val stepper = NumberField()
             stepper.value = 30.0
             return Property(

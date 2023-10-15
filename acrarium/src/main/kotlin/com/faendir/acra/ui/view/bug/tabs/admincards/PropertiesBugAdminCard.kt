@@ -25,6 +25,7 @@ import com.faendir.acra.security.RequiresPermission
 import com.faendir.acra.ui.component.AdminCard
 import com.faendir.acra.ui.component.BugSolvedVersionSelect
 import com.faendir.acra.ui.component.Translatable
+import com.faendir.acra.ui.component.Translatable.Companion.createSpan
 import com.faendir.acra.ui.ext.*
 import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.orderedlayout.FlexLayout
@@ -33,7 +34,7 @@ import com.vaadin.flow.router.NotFoundException
 
 @View
 @RequiresPermission(Permission.Level.EDIT)
-class PropertiesCard(
+class PropertiesBugAdminCard(
     bugRepository: BugRepository,
     versionRepository: VersionRepository,
     routeParams: RouteParams,
@@ -44,7 +45,7 @@ class PropertiesCard(
 
     init {
         content {
-            setHeader(Translatable.createLabel(Messages.PROPERTIES))
+            setHeader(createSpan(Messages.PROPERTIES))
             flexLayout {
                 flexDirection = FlexLayout.FlexDirection.COLUMN
                 alignContent = FlexLayout.ContentAlignment.CENTER

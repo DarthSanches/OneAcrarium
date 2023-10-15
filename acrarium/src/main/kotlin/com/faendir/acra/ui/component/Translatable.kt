@@ -15,7 +15,6 @@
  */
 package com.faendir.acra.ui.component
 
-import com.faendir.acra.ui.ext.label
 import com.vaadin.flow.component.*
 import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent
 import com.vaadin.flow.component.button.Button
@@ -35,10 +34,6 @@ import com.vaadin.flow.router.RouterLink
 import com.vaadin.flow.shared.Registration
 import kotlin.reflect.KClass
 
-/**
- * @author lukas
- * @since 14.11.18
- */
 open class Translatable<T : Component>(protected val t: T, private val property: T.(String) -> Unit, internal val captionId: String, private vararg val params: Any) :
     Composite<T>(), LocaleChangeObserver, HasSize, HasStyle {
 
@@ -110,7 +105,7 @@ open class Translatable<T : Component>(protected val t: T, private val property:
 
         fun <T> createSelect(items: Collection<T>, getLabel: (T) -> String, captionId: String, vararg params: Any) = Value(Select<T>().apply {
             setItems(items)
-        }, Select<*>::label, captionId, params).apply {
+        }, { label = it }, captionId, params).apply {
             addTranslatedListener {
                 t.setItemLabelGenerator(getLabel)
             }
@@ -118,7 +113,7 @@ open class Translatable<T : Component>(protected val t: T, private val property:
 
         fun createCheckbox(captionId: String, vararg params: Any) = Value(Checkbox(), Checkbox::setLabel, captionId, *params)
 
-        fun createLabel(captionId: String, vararg params: Any) = Translatable(Label(), HasText::setText, captionId, *params)
+        fun createSpan(captionId: String, vararg params: Any) = Translatable(Span(), HasText::setText, captionId, *params)
 
         fun createH3(captionId: String, vararg params: Any) = Translatable(H3(), HasText::setText, captionId, *params)
 

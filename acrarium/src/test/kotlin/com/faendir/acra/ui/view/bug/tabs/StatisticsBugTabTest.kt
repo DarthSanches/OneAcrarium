@@ -13,27 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.faendir.acra.ui.view.report
+package com.faendir.acra.ui.view.bug.tabs
 
 import com.faendir.acra.common.UiParams
 import com.faendir.acra.common.UiTest
 import com.faendir.acra.persistence.TestDataBuilder
-import com.faendir.acra.persistence.app.AppId
-import com.faendir.acra.persistence.bug.BugId
 import com.faendir.acra.persistence.user.Permission
 import com.faendir.acra.persistence.user.Role
+import com.faendir.acra.ui.view.bug.BugView
+import com.github.appreciated.apexcharts.ApexCharts
+import com.github.mvysny.kaributesting.v10._find
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import strikt.api.expectThat
+import strikt.assertions.hasSize
 
-class ReportViewTest(
+class StatisticsBugTabTest(
     @Autowired private val testDataBuilder: TestDataBuilder,
 ) : UiTest() {
-    private val appId: AppId = testDataBuilder.createApp()
-    private val bugId: BugId = testDataBuilder.createBug(appId)
-    private val reportId: String = testDataBuilder.createReport(appId, bugId)
+    private val appId = testDataBuilder.createApp()
+    private val bugId = testDataBuilder.createBug(appId)
+
+    init {
+        testDataBuilder.createReport(appId, bugId)
+    }
 
     override fun setup() = UiParams(
-        route = ReportView::class,
-        routeParameters = ReportView.getNavigationParams(appId, bugId, reportId),
+        route = StatisticsBugTab::class,
+        routeParameters = BugView.getNavigationParams(appId, bugId),
         requiredAuthorities = setOf(Role.USER, Permission(appId, Permission.Level.VIEW))
     )
+
+    @Test
+    fun `should show statistics`() {
+        val charts = _find<ApexCharts>()
+
+        expectThat(charts).hasSize(5)
+    }
 }

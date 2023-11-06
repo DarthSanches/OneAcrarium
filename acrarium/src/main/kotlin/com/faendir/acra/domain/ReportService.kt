@@ -77,11 +77,20 @@ class ReportService(
 
         val date = json.getString(ReportField.USER_CRASH_DATE.name).toDate()
         val buildConfig: JSONObject? = json.optJSONObject(ReportField.BUILD_CONFIG.name)
-        val versionCode: Int = buildConfig?.findInt("VERSION_CODE") ?: json.findInt(ReportField.APP_VERSION_CODE.name) ?: 0
-        val versionName: String = buildConfig?.findString("VERSION_NAME") ?: json.findString(ReportField.APP_VERSION_NAME.name) ?: "N/A"
-        val flavor: String? = buildConfig?.findString("FLAVOR")
+        var versionCode: Int = buildConfig?.findInt("VERSION_CODE") ?: json.findInt(ReportField.APP_VERSION_CODE.name) ?: 0
+        var versionName: String = buildConfig?.findString("VERSION_NAME") ?: json.findString(ReportField.APP_VERSION_NAME.name) ?: "N/A"
+        var flavor: String? = buildConfig?.findString("FLAVOR")
 
-        versionRepository.ensureExists(appId, versionCode, flavor, versionName)
+        //todo(alex): rewrite without hardcode and probably rewrite sender to send necessary info in first.
+        val platformFingerprint: String? = json.optString("platform")
+        if(!platformFingerprint.isNullOrEmpty()) {
+            versionName = platformFingerprint
+            val trimmedVersion = versionName.substring(versionName.indexOfFirst { it == ':' }, versionName.indexOfLast { it == ':' })
+            versionCode = trimmedVersion.substringAfterLast('/').toInt()
+            flavor = trimmedVersion.substring(trimmedVersion.indexOfFirst { it == '/' } + 1, trimmedVersion.indexOfLast { it == '/' })
+        }
+
+        versionRepository.ensureExists(appId, versionCode, flavor, versionName?: "N/A")
 
         val bugId = bugRepository.findId(bugIdentifier) ?: bugRepository.create(bugIdentifier, stacktrace.substringBefore('\n'))
 

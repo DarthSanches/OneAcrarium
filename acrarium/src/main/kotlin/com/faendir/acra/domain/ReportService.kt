@@ -85,12 +85,11 @@ class ReportService(
         val platformFingerprint: String? = json.optString("platform")
         if(!platformFingerprint.isNullOrEmpty()) {
             versionName = platformFingerprint
-            val trimmedVersion = versionName.substring(versionName.indexOfFirst { it == ':' }, versionName.indexOfLast { it == ':' })
-            versionCode = trimmedVersion.substringAfterLast('/').toInt()
-            flavor = trimmedVersion.substring(trimmedVersion.indexOfFirst { it == '/' } + 1, trimmedVersion.indexOfLast { it == '/' })
+            versionCode = versionName.substringBeforeLast(':').substringAfterLast('/').toInt()
+            flavor = versionName.substringBefore(':').substringAfterLast('/')
         }
 
-        versionRepository.ensureExists(appId, versionCode, flavor, versionName?: "N/A")
+        versionRepository.ensureExists(appId, versionCode, flavor, versionName)
 
         val bugId = bugRepository.findId(bugIdentifier) ?: bugRepository.create(bugIdentifier, stacktrace.substringBefore('\n'))
 

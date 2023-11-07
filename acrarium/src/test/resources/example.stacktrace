@@ -256,5 +256,6 @@
     "DUMPSYS_MEMINFO": "",
     "PACKAGE_NAME": "com.faendir.acratest",
     "APP_VERSION_NAME": "1.1",
-    "PHONE_MODEL": "sdk_gphone_x86"
+    "PHONE_MODEL": "sdk_gphone_x86",
+    "platform" : "MediaTek_Group_B/mt5867_group_b_eu/mt5867_group_b:11/ozon/146:user/dev-keys"
 }

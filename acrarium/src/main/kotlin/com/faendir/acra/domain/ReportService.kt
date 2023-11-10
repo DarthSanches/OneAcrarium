@@ -83,10 +83,12 @@ class ReportService(
 
         //todo(alex): rewrite without hardcode and probably rewrite sender to send necessary info in first.
         val platformFingerprint: String? = json.optString("platform")
-        if(!platformFingerprint.isNullOrEmpty()) {
-            versionName = platformFingerprint
-            versionCode = versionName.substringBeforeLast(':').substringAfterLast('/').toInt()
-            flavor = versionName.substringBefore(':').substringAfterLast('/')
+        platformFingerprint?.runCatching {
+            if(!isNullOrEmpty()) {
+                versionCode = substringBeforeLast(':').substringAfterLast('/').toInt()
+                flavor = substringBefore(':').substringAfterLast('/')
+                versionName = "$flavor[$versionCode]"
+            }
         }
 
         versionRepository.ensureExists(appId, versionCode, flavor, versionName)

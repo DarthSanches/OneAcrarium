@@ -1,10 +1,10 @@
-import {html, LitElement} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import { html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
 // @ts-ignore
 import ApexCharts from 'apexcharts/dist/apexcharts.esm';
 import '@webcomponents/shadycss/apply-shim.min.js';
 import color from "onecolor";
-import {PropertyValues} from "@lit/reactive-element/development/reactive-element";
+import { PropertyValues } from "@lit/reactive-element/development/reactive-element";
 
 declare global {
     interface Window {

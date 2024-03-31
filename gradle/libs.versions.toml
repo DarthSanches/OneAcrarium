@@ -5,7 +5,7 @@ springBoot = "3.1.5"
 vaadin-flow = "24.2.3"
 vaadin-base = "24.1.12"
 kotlinPoet = "1.14.2"
-testContainers = "1.19.2"
+testContainers = "1.19.3"
 liquibase = "4.20.0"
 jooq = "3.18.5"
 karibu = "2.1.0"
@@ -33,7 +33,7 @@ spring-mockk = "com.ninja-squad:springmockk:4.0.2"
 strikt = "io.strikt:strikt-core:0.34.1"
 springdoc = "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0"
 guava = "com.google.guava:guava:32.1.3-jre"
-testContainers-mysql = { module = "org.testcontainers:mysql", version.ref = "testContainers" }
+testContainers-postgres = { module = "org.testcontainers:postgresql", version.ref = "testContainers" }
 testContainers-junit = { module = "org.testcontainers:junit-jupiter", version.ref = "testContainers" }
 karibu-testing = { module = "com.github.mvysny.kaributesting:karibu-testing-v24", version.ref = "karibu" }
 karibu-spring = { module = "com.github.mvysny.kaributesting:karibu-testing-v10-spring", version.ref = "karibu" }

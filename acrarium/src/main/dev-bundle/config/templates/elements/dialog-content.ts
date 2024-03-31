@@ -21,31 +21,31 @@ export default class DialogContent extends LitElement {
     static get styles() {
         //language=css
         return css`
-            :host {
-                display: block;
-                max-width: 1000px;
-            }
+                :host {
+                    display: block;
+                    max-width: 1000px;
+                }
+                
+                .content {
+                    display: flex;
+                    flex-direction: column;
+                }
 
-            .content {
-                display: flex;
-                flex-direction: column;
-            }
+                .footer {
+                    background-color: var(--lumo-contrast-5pct);
+                    display: flex;
+                    margin: calc(var(--lumo-space-l) * -1);
+                    margin-top: var(--lumo-space-l);
+                    padding: var(--lumo-space-s) var(--lumo-space-l);
+                }
 
-            .footer {
-                background-color: var(--lumo-contrast-5pct);
-                display: flex;
-                margin: calc(var(--lumo-space-l) * -1);
-                margin-top: var(--lumo-space-l);
-                padding: var(--lumo-space-s) var(--lumo-space-l);
-            }
+                .spacer {
+                    flex: 1;
+                }
 
-            .spacer {
-                flex: 1;
-            }
-
-            slot[name="header"]::slotted(*) {
-                margin-top: var(--lumo-space-s) !important;
-            }
+                slot[name="header"]::slotted(*) {
+                    margin-top: var(--lumo-space-s) !important;
+                }
         `
     }
 

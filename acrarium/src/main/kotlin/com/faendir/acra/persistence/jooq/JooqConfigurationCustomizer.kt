@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2022 Lukas Morawietz (https://github.com/F43nd1r)
+ * (C) Copyright 2022-2024 Lukas Morawietz (https://github.com/F43nd1r)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ class JooqConfigurationCustomizer(private val customConverterProvider: CustomCon
             isRenderSchema = false
             isExecuteLogging = true
         }
-        configuration.setSQLDialect(SQLDialect.MYSQL)
+        configuration.setSQLDialect(SQLDialect.POSTGRES)
         configuration.set(customConverterProvider)
     }
 }

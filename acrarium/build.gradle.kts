@@ -29,7 +29,7 @@ dependencies {
     implementation(libs.orgSpringframeworkBoot.springBootStarterJooq)
     implementation(libs.comVaadin.vaadin)
     implementation(libs.comVaadin.vaadinSpringBootStarter)
-    implementation(libs.comMysql.mysqlConnectorJ)
+    implementation(libs.orgPostgresql.postgresql)
     implementation(libs.orgLiquibase.liquibaseCore)
     implementation(libs.ektorp)
     implementation(libs.acraJava)
@@ -53,11 +53,11 @@ dependencies {
     testImplementation(libs.orgSpringframeworkSecurity.springSecurityTest)
     testImplementation(libs.spring.mockk)
     testImplementation(libs.strikt)
-    testImplementation(libs.testContainers.mysql)
+    testImplementation(libs.testContainers.postgres)
     testImplementation(libs.testContainers.junit)
     testImplementation(libs.karibu.testing)
     testImplementation(libs.karibu.spring)
-    jooqGenerator(libs.comMysql.mysqlConnectorJ)
+    jooqGenerator(libs.orgPostgresql.postgresql)
     jooqGenerator(libs.orgYaml.snakeyaml)
     jooqGenerator(projects.jooqHelper)
 }
@@ -117,7 +117,7 @@ jooq {
         create("main") {
             generateSchemaSourceOnCompilation.set(true)
             jooqConfiguration.apply {
-                logging = org.jooq.meta.jaxb.Logging.WARN
+                logging = org.jooq.meta.jaxb.Logging.DEBUG
                 jdbc.apply {
                     driver = "org.testcontainers.jdbc.ContainerDatabaseDriver"
                     url = ""
@@ -125,7 +125,7 @@ jooq {
                 generator.apply {
                     name = "org.jooq.codegen.KotlinGenerator"
                     database.apply {
-                        name = "com.faendir.jooq.MySqlLiquibaseDatabase"
+                        name = "com.faendir.jooq.PostgresLiquibaseDatabase"
                         includes = ".*"
                         excludes = "DATABASECHANGELOG|DATABASECHANGELOGLOCK"
                         inputSchema = "acrarium"

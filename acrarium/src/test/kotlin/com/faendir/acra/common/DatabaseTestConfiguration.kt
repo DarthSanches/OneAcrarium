@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2023 Lukas Morawietz (https://github.com/F43nd1r)
+ * (C) Copyright 2023-2024 Lukas Morawietz (https://github.com/F43nd1r)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ class DatabaseTestConfiguration {
     @Bean
     fun dataSource(): DataSource = DataSourceBuilder.create()
         .driverClassName("org.testcontainers.jdbc.ContainerDatabaseDriver")
-        .url("jdbc:tc:mysql:8.0:////test?serverTimezone=UTC&TC_MY_CNF=mysql.conf.d")
+        .url("jdbc:tc:postgresql:9.6.8:////test?serverTimezone=UTC&TC_MY_CNF=postgresql.conf.d")
         .build()
 }
 

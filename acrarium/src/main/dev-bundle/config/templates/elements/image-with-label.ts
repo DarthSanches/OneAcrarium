@@ -23,20 +23,20 @@ export default class ImageWithLabel extends LitElement {
 
     static get styles() {
         return css`
-          :host {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-          }
+                :host {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                }
 
-          img {
-            width: 32px;
-            height: 32px;
-          }
+                img {
+                    width: 32px;
+                    height: 32px;
+                }
 
-          label {
-            padding-left: var(--lumo-space-s);
-          }
+                label {
+                    padding-left: var(--lumo-space-s);
+                }
         `
     }
 
